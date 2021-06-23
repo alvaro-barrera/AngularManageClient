@@ -1,7 +1,7 @@
 export interface Client{
   id?:string;
   name?:string;
-  lastname:string;
+  lastname?:string;
   email?:string;
   budget:number;
 }

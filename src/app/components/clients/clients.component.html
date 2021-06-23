@@ -37,12 +37,23 @@
                   <td>{{ client.name }} {{ client.lastname }}</td>
                   <td>{{ client.budget | currency: "PEN":"S/" }}</td>
                   <td>
-                    <a
-                      routerLink="/client/{{ client.id }}"
-                      class="btn btn-secondary"
+                    <button
+                      type="button"
+                      class="btn btn-sm btn-secondary"
+                      data-bs-toggle="modal"
+                      data-bs-target="#newClientModal"
+                      (click)="edit(client.id)"
                     >
-                      <i class="fas fa-angle-double-right"></i> Editar
-                    </a>
+                      <i class="fas fa-angle-double-right"></i>
+                      Editar
+                    </button>
+                    <button
+                      (click)="deleteClient(client)"
+                      class="btn btn-sm btn-danger ms-1"
+                      type="button"
+                    >
+                      <i class="fas fa-trash"></i> Eliminar
+                    </button>
                   </td>
                 </tr>
               </tbody>
@@ -75,17 +86,29 @@
 </section>
 
 <!-- Modal agregar cliente -->
-<div class="modal fade" id="newClientModal">
+<div
+  class="modal fade"
+  id="newClientModal"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+>
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header bg-info text-white">
-        <h5 class="modal-title">Agregar cliente</h5>
-        <button class="close" data-bs-dismiss="modal" #buttonClose>
+        <h5 class="modal-title">{{ titleModal }}</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+          #buttonClose
+          (click)="clearRegister()"
+        >
           <span>&times;</span>
         </button>
       </div>
       <flash-messages></flash-messages>
-      <form #clientForm="ngForm" (ngSubmit)="store(clientForm)">
+      <form #clientForm="ngForm" (ngSubmit)="handleSave(clientForm)">
         <div class="modal-body">
           <div class="form-group">
             <label for="name">Nombre</label>
@@ -95,7 +118,7 @@
               class="form-control"
               #name="ngModel"
               [(ngModel)]="client.name"
-              [ngClass]="{'is-invalid': name.errors && name.touched}"
+              [ngClass]="{ 'is-invalid': name.errors && name.touched }"
               required
               minlength="3"
             />
@@ -110,12 +133,12 @@
           <div class="form-group">
             <label for="lastname">Apellido</label>
             <input
-            type="text"
-            name="lastname"
-            class="form-control"
-            #lastname="ngModel"
+              type="text"
+              name="lastname"
+              class="form-control"
+              #lastname="ngModel"
               [(ngModel)]="client.lastname"
-              [ngClass]="{'is-invalid': lastname.errors && lastname.touched}"
+              [ngClass]="{ 'is-invalid': lastname.errors && lastname.touched }"
               required
               minlength="3"
             />
@@ -129,12 +152,12 @@
           <div class="form-group">
             <label for="email">Email</label>
             <input
-             type="email"
-             name="email"
-             class="form-control"
-             #email="ngModel"
+              type="email"
+              name="email"
+              class="form-control"
+              #email="ngModel"
               [(ngModel)]="client.email"
-              [ngClass]="{'is-invalid': email.errors && email.touched}"
+              [ngClass]="{ 'is-invalid': email.errors && email.touched }"
               required
               pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
             />
@@ -147,16 +170,17 @@
           </div>
           <div class="form-group">
             <label for="budget">Saldo</label>
-            <input type="number"
-            name="budget"
-            class="form-control"
-            #budget="ngModel"
-            [(ngModel)]="client.budget"
-            [ngClass]="{'is-invalid': budget.errors && budget.touched}"
-            required
-            min="0"
-             />
-             <div *ngIf="budget.errors?.required" class="invalid-feedback">
+            <input
+              type="number"
+              name="budget"
+              class="form-control"
+              #budget="ngModel"
+              [(ngModel)]="client.budget"
+              [ngClass]="{ 'is-invalid': budget.errors && budget.touched }"
+              required
+              min="0"
+            />
+            <div *ngIf="budget.errors?.required" class="invalid-feedback">
               Saldo requerido
             </div>
             <div *ngIf="budget.errors?.min" class="invalid-feedback">
