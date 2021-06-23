@@ -1,1 +1,173 @@
-<p>clients works!</p>
+<section class="py-4 mb-4 bg-light" id="actions">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-3">
+        <a
+          href="#"
+          class="btn btn-primary btn-block"
+          data-bs-toggle="modal"
+          data-bs-target="#newClientModal"
+        >
+          <i class="fas fa-plus"></i> Agregar cliente
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="clients">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-9">
+        <div class="card">
+          <div class="card-header">
+            <h4>Listado de clientes</h4>
+            <table class="table table-striped">
+              <thead class="thdead-dark">
+                <tr>
+                  <th>#</th>
+                  <th>Nombre</th>
+                  <th>Saldo</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let client of clients; let i = index">
+                  <td>{{ i + 1 }}</td>
+                  <td>{{ client.name }} {{ client.lastname }}</td>
+                  <td>{{ client.budget | currency: "PEN":"S/" }}</td>
+                  <td>
+                    <a
+                      routerLink="/client/{{ client.id }}"
+                      class="btn btn-secondary"
+                    >
+                      <i class="fas fa-angle-double-right"></i> Editar
+                    </a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <!-- Tarjetas laterales -->
+      <div class="col-md-3">
+        <div class="card-text-center bg-danger text-white mb-3">
+          <div class="card-body">
+            <h3>Saldo total</h3>
+            <h4 class="display-4">
+              {{ getBudgetTotal() | currency: "PEN":"S/" }}
+            </h4>
+          </div>
+        </div>
+
+        <div class="card-text-center bg-success text-white mb-3">
+          <div class="card-body">
+            <h3>Total clientes</h3>
+            <h4 class="display-4">
+              <i class="fas fa-users"></i> {{ clients?.length }}
+            </h4>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Modal agregar cliente -->
+<div class="modal fade" id="newClientModal">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header bg-info text-white">
+        <h5 class="modal-title">Agregar cliente</h5>
+        <button class="close" data-bs-dismiss="modal" #buttonClose>
+          <span>&times;</span>
+        </button>
+      </div>
+      <flash-messages></flash-messages>
+      <form #clientForm="ngForm" (ngSubmit)="store(clientForm)">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="name">Nombre</label>
+            <input
+              type="text"
+              name="name"
+              class="form-control"
+              #name="ngModel"
+              [(ngModel)]="client.name"
+              [ngClass]="{'is-invalid': name.errors && name.touched}"
+              required
+              minlength="3"
+            />
+            <div *ngIf="name.errors?.required" class="invalid-feedback">
+              Nombre requerido
+            </div>
+            <div *ngIf="name.errors?.minlength" class="invalid-feedback">
+              Debe contener al menos 3 caracteres
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="lastname">Apellido</label>
+            <input
+            type="text"
+            name="lastname"
+            class="form-control"
+            #lastname="ngModel"
+              [(ngModel)]="client.lastname"
+              [ngClass]="{'is-invalid': lastname.errors && lastname.touched}"
+              required
+              minlength="3"
+            />
+            <div *ngIf="lastname.errors?.required" class="invalid-feedback">
+              Apellido requerido
+            </div>
+            <div *ngIf="lastname.errors?.minlength" class="invalid-feedback">
+              Debe contener al menos 3 caracteres
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input
+             type="email"
+             name="email"
+             class="form-control"
+             #email="ngModel"
+              [(ngModel)]="client.email"
+              [ngClass]="{'is-invalid': email.errors && email.touched}"
+              required
+              pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
+            />
+            <div *ngIf="email.errors?.required" class="invalid-feedback">
+              Email requerido
+            </div>
+            <div *ngIf="email.errors?.pattern" class="invalid-feedback">
+              Email no válido
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="budget">Saldo</label>
+            <input type="number"
+            name="budget"
+            class="form-control"
+            #budget="ngModel"
+            [(ngModel)]="client.budget"
+            [ngClass]="{'is-invalid': budget.errors && budget.touched}"
+            required
+            min="0"
+             />
+             <div *ngIf="budget.errors?.required" class="invalid-feedback">
+              Saldo requerido
+            </div>
+            <div *ngIf="budget.errors?.min" class="invalid-feedback">
+              La cantidad mínima es 0.00
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Guardar</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

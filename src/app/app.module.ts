@@ -1,5 +1,10 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { environment } from 'src/environments/environment';
+import { AngularFireModule } from '@angular/fire';
+import {AngularFirestoreModule, } from "@Angular/fire/firestore";
+// FirestoreSettingsToken
+import {AngularFireAuthModule} from "@angular/fire/auth";
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -11,6 +16,10 @@ import { LoginComponent } from './components/login/login.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { RegisterComponent } from './components/register/register.component';
+import { BoardComponent } from './components/board/board.component';
+import { FlashMessagesModule } from 'angular2-flash-messages';
+import { ClientService } from './services/client.service';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -22,13 +31,18 @@ import { RegisterComponent } from './components/register/register.component';
     LoginComponent,
     NotFoundComponent,
     FooterComponent,
-    RegisterComponent
+    RegisterComponent,
+    BoardComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    AngularFireModule.initializeApp(environment.firestore, "ManageClientApp"),
+    AngularFireAuthModule,
+    FlashMessagesModule.forRoot(),
+    FormsModule
   ],
-  providers: [],
+  providers: [ClientService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
