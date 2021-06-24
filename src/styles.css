@@ -2,3 +2,16 @@
 .cursor-pinter{
   cursor: pointer;
 }
+.bg-footer{
+  background-color: #c3cfdd !important;
+}
+
+.footer{
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+
+.bg-navbar {
+  background-color:#19676b;
+}

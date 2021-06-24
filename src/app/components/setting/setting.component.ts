@@ -16,8 +16,6 @@ export class SettingComponent implements OnInit {
     this.settingService
       .getsetting()
       .subscribe((setting: Setting | undefined) => {
-        console.log(setting);
-
         if (setting != undefined) {
           this.registerPermission = setting.registerPermission;
         }

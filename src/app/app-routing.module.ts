@@ -7,11 +7,12 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
 import { RegisterComponent } from './components/register/register.component';
 import { SettingComponent } from './components/setting/setting.component';
 import { AuthGuard } from './guards/auth.guard';
+import { SettingGuard } from './guards/setting.guard';
 
 const routes: Routes = [
   {path: "", component: BoardComponent, canActivate: [AuthGuard]},
   {path: "login", component: LoginComponent},
-  {path: "register", component: RegisterComponent},
+  {path: "register", component: RegisterComponent,canActivate: [SettingGuard]},
   {path: "setting", component: SettingComponent,canActivate: [AuthGuard]},
   {path: "client/:id", component: ClientEditComponent,canActivate: [AuthGuard]},
   {path: "**", component: NotFoundComponent},

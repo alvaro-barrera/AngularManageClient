@@ -23,6 +23,7 @@ import { FormsModule } from '@angular/forms';
 import { LoginService } from './services/login.service';
 import { AuthGuard } from './guards/auth.guard';
 import { SettingService } from './services/setting.service';
+import { SettingGuard } from './guards/setting.guard';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,7 @@ import { SettingService } from './services/setting.service';
     FormsModule,
   ],
   providers: [
-    ClientService, LoginService, AuthGuard,
+    ClientService, LoginService, AuthGuard, SettingGuard,
     SettingService,
     {provide: SETTINGS, useValue:{}}
   ],

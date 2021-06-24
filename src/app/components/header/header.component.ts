@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { LoginService } from 'src/app/services/login.service';
+import { SettingService } from 'src/app/services/setting.service';
 
 @Component({
   selector: 'app-header',
@@ -10,10 +11,12 @@ import { LoginService } from 'src/app/services/login.service';
 export class HeaderComponent implements OnInit {
   isLoggedIn: boolean;
   loggedInUser: string | null;
+  registerPermission: boolean | undefined;
 
   constructor(
     private loginService: LoginService,
-    private router: Router
+    private router: Router,
+    private settingService: SettingService
   ) { }
 
   ngOnInit(): void {
@@ -26,6 +29,13 @@ export class HeaderComponent implements OnInit {
         this.isLoggedIn = false;
       }
     });
+
+    this.settingService.getsetting()
+    .subscribe(setting =>{
+      if (setting != undefined) {
+        this.registerPermission = setting.registerPermission;
+      }
+    })
   }
   logout(){
     this.loginService.logout();
